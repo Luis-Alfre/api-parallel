@@ -741,7 +741,9 @@ int funcionGenetico(int poblacion[],
 					double distancias[],
 					double aptitud[],
 					int tamPoblacion, 
-					int nCiudades)
+					int nCiudades, 
+					double probCruce,
+					double probMutacion)
 {
 	
 	int posMejor = 0;; // posici�n del individuo mejor adaptado
@@ -754,8 +756,7 @@ int funcionGenetico(int poblacion[],
 	double  *puntuacion, *puntAcumulada, *nuevaAptitud, *nuevaDistancias;
 	double longitud;
 	double longitudes[2];
-	double probCruce = 0.8;
-	double probMutacion = 0.1;
+
 	
 	nuevaDistancias = ( double * ) malloc ( tamPoblacion * sizeof ( double ) );
 	nuevaAptitud = ( double * ) malloc ( tamPoblacion * sizeof ( double ) );
@@ -785,15 +786,15 @@ int funcionGenetico(int poblacion[],
                   pobAuxiliar,nuevaAptitud,nuevaDistancias, // Salida de la funcion
                   tamPoblacion,nCiudades ); // datos entrada
                   
-        poblacion = pobAuxiliar;
-        //copiarMatrizEnteros(poblacion,pobAuxiliar,tamPoblacion,nCiudades);
-        distancias = nuevaDistancias;
-        //copiarVectorReales(distancias,nuevaDistancias,tamPoblacion);
-        aptitud = nuevaAptitud;
-        //copiarVectorReales(aptitud,nuevaAptitud,tamPoblacion);
+        //poblacion = pobAuxiliar;
+        copiarMatrizEnteros(poblacion,pobAuxiliar,tamPoblacion,nCiudades);
+        //distancias = nuevaDistancias;
+        copiarVectorReales(distancias,nuevaDistancias,tamPoblacion);
+        //aptitud = nuevaAptitud;
+        copiarVectorReales(aptitud,nuevaAptitud,tamPoblacion);
         reproduccion(poblacion,distancias,aptitud,probCruce,
 		             matrizDistancias,tamPoblacion,nCiudades);
-		mutados = mutacion(poblacion,distancias,aptitud,probMutacion,
+		mutados += mutacion(poblacion,distancias,aptitud,probMutacion,
 		             matrizDistancias,tamPoblacion,nCiudades);
 					             
 		posMejor = evaluacion(aptitud,  // datos entrada

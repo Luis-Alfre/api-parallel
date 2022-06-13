@@ -102,14 +102,13 @@ void genetico(int ciudades,
 
 
 	// Generacion del problema
-	char  *nombreArchivo = (char*)"bays29.tsp";
 	coordenadasX = x;
 	coordenadasY = y;
 	// Se imprime el vector en un archivo de texto.
 	char cX[]= "coordenadasX.txt";
-	imprimirVectorEnteroFichero(coordenadasX,nCiudades,cX);
+	imprimirVectorEnteroFichero(x,nCiudades,cX);
 	char cY[] = "coordenadasY.txt";
-	imprimirVectorEnteroFichero(coordenadasY,nCiudades,cY);
+	imprimirVectorEnteroFichero(y,nCiudades,cY);
 	//nCiudades = leerArchivo( nombreArchivo, intIndice, coordenadasX, coordenadasY);
 	//generarCoordenadas(coordenadasX, coordenadasY, nCiudades, xMin, xMax, yMin, yMax);  
 	crearMatrizDistancia(matrizDistancias, coordenadasX, coordenadasY, nCiudades);
@@ -181,10 +180,18 @@ void genetico(int ciudades,
 
 
 	int ciclos = numMaxGen;
-	//int posMejor1 = 0, posMejor2 = 0, posMejor3 = 0, posMejor4 = 0; // posici�n del individuo mejor adaptado
 		
 	for(int i=0;i<ciclos;i++)//migraciones
 	{
+		// Aqui deber�a incluir el intercambio de elementos
+		if(i%10==0) {
+			//mejor posicion de cada isla, isla origen, isla destino
+			intercambio(posMejor1, posMejor2, poblacion1, poblacion2, nCiudades, tamPoblacion);
+			intercambio(posMejor2, posMejor3, poblacion2, poblacion3, nCiudades, tamPoblacion);
+			intercambio(posMejor3, posMejor4, poblacion3, poblacion4, nCiudades, tamPoblacion);
+			intercambio(posMejor4, posMejor1, poblacion4, poblacion1, nCiudades, tamPoblacion);
+		}
+
 		#pragma omp parallel num_threads(2)
 		#pragma omp sections
 		{
@@ -194,20 +201,18 @@ void genetico(int ciudades,
 				//extraerVector(poblacion1,indi, 0, tamPoblacion, nCiudades);
 				//printf("\n Antes: ");
 				//imprimirVectorEnteros(indi,nCiudades);
-				posMejor1 = funcionGenetico(poblacion1, matrizDistancias,distancias1,aptitud1, tamPoblacion, nCiudades);
+				posMejor1 = funcionGenetico(poblacion1, matrizDistancias,distancias1,aptitud1, tamPoblacion, nCiudades, probCruce, probMutacion);
 				extraerVector(poblacion1,mejorCamino1,posMejor1,tamPoblacion, nCiudades);
 				longitud1 = longitudCircuito(mejorCamino1, matrizDistancias,nCiudades);
 				if (longitud1<mRta1){
 					extraerVector(poblacion1,MejorRuta1,posMejor1,tamPoblacion, nCiudades);
 					mRta1 = longitud1;
 				}
-				//extraerVector(poblacion1,indi, 0, tamPoblacion, nCiudades);
-				//printf("\n Despues: ");
-				//imprimirVectorEnteros(indi,nCiudades);
+
 			}
 			# pragma omp section
 			{
-				posMejor2 = funcionGenetico(poblacion2, matrizDistancias,distancias2,aptitud2, tamPoblacion, nCiudades);
+				posMejor2 = funcionGenetico(poblacion2, matrizDistancias,distancias2,aptitud2, tamPoblacion, nCiudades, probCruce, probMutacion);
 				extraerVector(poblacion2,mejorCamino2,posMejor2,tamPoblacion, nCiudades);
 				longitud2 = longitudCircuito(mejorCamino2, matrizDistancias,nCiudades);
 				if (longitud2<mRta2){
@@ -217,7 +222,7 @@ void genetico(int ciudades,
 			}
 			# pragma omp section
 			{
-				posMejor3 = funcionGenetico(poblacion3, matrizDistancias,distancias3,aptitud3, tamPoblacion, nCiudades);
+				posMejor3 = funcionGenetico(poblacion3, matrizDistancias,distancias3,aptitud3, tamPoblacion, nCiudades, probCruce, probMutacion);
 				extraerVector(poblacion1,mejorCamino3,posMejor3,tamPoblacion, nCiudades);
 				longitud3 = longitudCircuito(mejorCamino3, matrizDistancias,nCiudades);
 				if (longitud3<mRta3){
@@ -227,7 +232,7 @@ void genetico(int ciudades,
 			}
 			# pragma omp section
 			{
-				posMejor4 = funcionGenetico(poblacion4, matrizDistancias,distancias4,aptitud4, tamPoblacion, nCiudades);
+				posMejor4 = funcionGenetico(poblacion4, matrizDistancias,distancias4,aptitud4, tamPoblacion, nCiudades, probCruce, probMutacion);
 				extraerVector(poblacion4,mejorCamino4,posMejor4,tamPoblacion, nCiudades);
 				longitud4 = longitudCircuito(mejorCamino4, matrizDistancias,nCiudades);
 				if (longitud4<mRta4){
@@ -237,15 +242,7 @@ void genetico(int ciudades,
 			}
 			
 		}
-		// Aqui deber�a incluir el intercambio de elementos
-		if(i%10==0) {
-			//mejor posicion de cada isla, isla origen, isla destino
-			// intercambio(posMejor1, posMejor2, poblacion1, poblacion2, nCiudades, tamPoblacion);
-			// intercambio(posMejor2, posMejor3, poblacion2, poblacion3, nCiudades, tamPoblacion);
-			// intercambio(posMejor3, posMejor4, poblacion3, poblacion4, nCiudades, tamPoblacion);
-			// intercambio(posMejor4, posMejor1, poblacion4, poblacion1, nCiudades, tamPoblacion);
-			
-		}
+		
 
 	}
 		printf("\n Longitud del camino final 1: %.2f \n",mRta1 );
