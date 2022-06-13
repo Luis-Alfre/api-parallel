@@ -6,7 +6,7 @@ from flask_restful import Resource
 import json
 import ctypes
 
-import example 
+import shared.example as example 
 
 class PetriNets(Resource):
     
@@ -16,7 +16,9 @@ class PetriNets(Resource):
                              body['tanPoblacion'],
                              body['proCruce'],
                              body['proMutacion'],
-                             body['nunMaxGen'])
+                             body['nunMaxGen'],
+                             body['x'],
+                             body['y'])
         return {"New State":"si"}, 200
 
 

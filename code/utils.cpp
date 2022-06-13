@@ -736,8 +736,12 @@ void copiarVectorReales(double M[], double N[], int n)
 		
 }
 
-int funcionGenetico(int poblacion[], double matrizDistancias[], double distancias[],double aptitud[],
-													int tamPoblacion, int nCiudades)
+int funcionGenetico(int poblacion[], 
+					double matrizDistancias[], 
+					double distancias[],
+					double aptitud[],
+					int tamPoblacion, 
+					int nCiudades)
 {
 	
 	int posMejor = 0;; // posici�n del individuo mejor adaptado
@@ -767,11 +771,11 @@ int funcionGenetico(int poblacion[], double matrizDistancias[], double distancia
 	// Impresi�n en archivo mejor ruta
 	char nombreCamino[]= "caminoInicial.txt";
 	
-	imprimirVectorEnteroFichero(mejorCamino,nCiudades,nombreCamino);
-	printf("camino : \n");
+	// imprimirVectorEnteroFichero(mejorCamino,nCiudades,nombreCamino);
+	// printf("camino : \n");
 	longitud = longitudCircuito(mejorCamino, matrizDistancias,nCiudades);
 	printf("\n Longitud del camino al inicio : %.2f \n",longitud );
-	longitudes[0] = longitud;
+	//longitudes[0] = longitud;
 	
 	printf("\n ========= INICIO DEL ALGORITMO GENETICO ==========\n");
 	
@@ -781,12 +785,12 @@ int funcionGenetico(int poblacion[], double matrizDistancias[], double distancia
                   pobAuxiliar,nuevaAptitud,nuevaDistancias, // Salida de la funcion
                   tamPoblacion,nCiudades ); // datos entrada
                   
-        //poblacion = pobAuxiliar;
-        copiarMatrizEnteros(poblacion,pobAuxiliar,tamPoblacion,nCiudades);
-        //distancias = nuevaDistancias;
-        copiarVectorReales(distancias,nuevaDistancias,tamPoblacion);
-        //aptitud = nuevaAptitud;
-        copiarVectorReales(aptitud,nuevaAptitud,tamPoblacion);
+        poblacion = pobAuxiliar;
+        //copiarMatrizEnteros(poblacion,pobAuxiliar,tamPoblacion,nCiudades);
+        distancias = nuevaDistancias;
+        //copiarVectorReales(distancias,nuevaDistancias,tamPoblacion);
+        aptitud = nuevaAptitud;
+        //copiarVectorReales(aptitud,nuevaAptitud,tamPoblacion);
         reproduccion(poblacion,distancias,aptitud,probCruce,
 		             matrizDistancias,tamPoblacion,nCiudades);
 		mutados = mutacion(poblacion,distancias,aptitud,probMutacion,
@@ -797,16 +801,18 @@ int funcionGenetico(int poblacion[], double matrizDistancias[], double distancia
 				              tamPoblacion); // datos entrada
         
 	}
-	//printf("\n ---- alcanza a pasar--- \n");
-	extraerVector(poblacion,mejorCamino,posMejor,tamPoblacion, nCiudades);
-	char nombreCaminoFinal [] = "caminoFinal.txt";
-	imprimirVectorEnteroFichero(mejorCamino,nCiudades,nombreCaminoFinal);
-	//printf("\n ---- llego aqui--- \n");
-	longitud = longitudCircuito(mejorCamino, matrizDistancias,nCiudades);
-	printf("\n Longitud del camino final : %.2f \n",longitud );
-	longitudes[1]= longitud;
-	char texLongitudes[]= "longitudes.txt";
-	imprimirVectorRealFichero(longitudes,2,texLongitudes);
+
+	
+	// printf("\n ---- alcanza a pasar--- \n");
+	// extraerVector(poblacion,mejorCamino,posMejor,tamPoblacion, nCiudades);
+	// char nombreCaminoFinal [] = "caminoFinal.txt";
+	// imprimirVectorEnteroFichero(mejorCamino,nCiudades,nombreCaminoFinal);
+	// //printf("\n ---- llego aqui--- \n");
+	// longitud = longitudCircuito(mejorCamino, matrizDistancias,nCiudades);
+	// printf("\n Longitud del camino final : %.2f \n",longitud );
+	// longitudes[1]= longitud;
+	// char texLongitudes[]= "longitudes.txt";
+	// imprimirVectorRealFichero(longitudes,2,texLongitudes);
 	//free(poblacion);
 	//free(matrizDistancias);
 	//free(distancias);
@@ -816,4 +822,5 @@ int funcionGenetico(int poblacion[], double matrizDistancias[], double distancia
 	//free(nuevaAptitud);
 	return posMejor;
 }
+
 
