@@ -8,6 +8,7 @@ from api import include_urls
 
 app = Flask(__name__)
 
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 api = Api(app)
 include_urls(api)

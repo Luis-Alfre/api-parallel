@@ -13,10 +13,7 @@ void intercambio(int posMejor1, int posMejor2, int isla1[], int isla2[], int nCi
 	pos1 = ( int * ) malloc ( nCiudades * sizeof ( int ) );
 	pos2 = ( int * ) malloc ( nCiudades * sizeof ( int ) );
 
-	printf("************");
 	imprimirVectorEnteros(isla1, nCiudades);
-	printf("************");
-
 	extraerVector(isla1,pos1,posMejor1,tamañoPoblacion, nCiudades);
 	extraerVector(isla2,pos2,posMejor2,tamañoPoblacion, nCiudades);
 	insertarVector(isla1,pos2, posMejor1,tamañoPoblacion, nCiudades);
@@ -294,7 +291,7 @@ void genetico(int ciudades,
 
 extern "C"
 {
-    extern void cffi_suma_enteros(int ciudades, 
+    extern void genetic(int ciudades, 
 									int tamanioPoblacion, 
 									double proMutacion, 
 									double proCruce, 
